@@ -72,13 +72,16 @@ function sumInWords($sum, $roundSum = false)
 	$noDigitsAfter = static function($index) use (&$levels) {
 		return (int)implode('', array_slice($levels, $index)) === 0;
 	};
+	$splitThousands = static function($value) {
+		$grouped = strrev(rtrim(chunk_split(strrev($value), 3, '-'), '-'));
+		return explode('-', $grouped);
+	};
 	$out = $tmp = array();
 	// Поехали!
 	$tmp = explode('.', str_replace(',', '.', $sum));
-	$rub = number_format($tmp[0], 0, '', '-');
 	// нормализация копеек
 	$kop = isset($tmp[1]) ? str_pad(substr($tmp[1], 0, 2), 2, '0', STR_PAD_LEFT) : '00';
-	$levels = explode('-', $rub);
+	$levels = $splitThousands($tmp[0]);
 	$offset = sizeof($levels) - 1;
 	foreach ($levels as $k => $lev)
 	{
@@ -126,5 +129,5 @@ function sumInWords($sum, $roundSum = false)
 		$out[] = pluralForm($kop, array($forms[-1][0], $forms[-1][1], $forms[-1][2]), false);
 	}
 
-	return implode(' ', $out);
+	return implode(' ', array_filter($out));
 }
