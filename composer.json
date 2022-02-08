@@ -1,0 +1,11 @@
+{
+    "autoload": {
+        "files": ["sumInWords.php"]
+    },
+    "scripts": {
+        "test": "pest --coverage"
+    },
+    "require-dev": {
+        "pestphp/pest": "^1.21"
+    }
+}
