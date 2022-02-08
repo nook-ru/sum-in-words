@@ -69,6 +69,9 @@ function sumInWords($sum, $roundSum = false)
 		10 => array('нониллион', 'нониллиона', 'нониллионов', 1), // 10^30
 		11 => array('дециллион', 'дециллиона', 'дециллионов', 1), // 10^33
 	);
+	$noDigitsAfter = static function($index) use (&$levels) {
+		return (int)implode('', array_slice($levels, $index)) === 0;
+	};
 	$out = $tmp = array();
 	// Поехали!
 	$tmp = explode('.', str_replace(',', '.', $sum));
@@ -104,9 +107,17 @@ function sumInWords($sum, $roundSum = false)
 				}
 			}
 		}
-		if ($lev > 0 || $ind == 0)
+		if ($lev > 0 || $ind == 0 || $noDigitsAfter($k+1))
 		{
-			$out[] = pluralForm($lev, array($forms[$ind][0], $forms[$ind][1], $forms[$ind][2]), false);
+			if ($ind == 0 && $out == []) {
+				$out[] = 'ноль';
+			}
+			if ($noDigitsAfter($k)) {
+				$out[] = 'рублей';
+				break;
+			} else {
+				$out[] = pluralForm($lev, array($forms[$ind][0], $forms[$ind][1], $forms[$ind][2]), false);
+			}
 		}
 	}
 	if ($roundSum == 0)
