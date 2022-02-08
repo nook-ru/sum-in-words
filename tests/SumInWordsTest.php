@@ -1,6 +1,6 @@
 <?php
 
-test('sumInWords без копеек', function ($sum, $result, $roundSum = true) {
+test('без копеек', function ($sum, $result, $roundSum = true) {
     expect(sumInWords($sum, $roundSum))->toBe($result);
 })->with([
     [1, 'один рубль'],
@@ -26,7 +26,7 @@ test('sumInWords без копеек', function ($sum, $result, $roundSum = true
     ],
 ]);
 
-test('sumInWords с копейками', function ($sum, $result, $roundSum = false) {
+test('с копейками', function ($sum, $result, $roundSum = false) {
     expect(sumInWords($sum, $roundSum))->toBe($result);
 })->with([
     [0.96, 'ноль рублей 96 копеек'],
@@ -36,3 +36,7 @@ test('sumInWords с копейками', function ($sum, $result, $roundSum = fa
     [1.02, 'один рубль 02 копейки'],
     [1.05, 'один рубль 05 копеек'],
 ]);
+
+it('throws OverflowException', function () {
+    sumInWords(1000 . str_repeat('0', 33));
+})->throws(OverflowException::class);

@@ -30,6 +30,7 @@ function pluralForm($number, array $titles, bool $includeNumber = false): string
  *
  * @param float|int|string $sum Сумма
  * @param bool $roundSum Округлять и не выводить копейки?
+ * @throws OverflowException
  * @return string
  */
 function sumInWords($sum, bool $roundSum = false): string
@@ -130,6 +131,9 @@ function sumInWords($sum, bool $roundSum = false): string
     foreach ($levels as $k => $lev) {
         $lev = str_pad($lev, 3, '0', STR_PAD_LEFT); // нормализация
         $ind = $offset - $k; // индекс для $forms
+        if (!isset($forms[$ind])) {
+            throw new OverflowException();
+        }
         if ($lev[0] != '0') {
             $out[] = $str[100][$lev[0]];
         } // сотни
