@@ -6,7 +6,7 @@
         "test": "pest --coverage"
     },
     "require": {
-        "php": "~7.0||~8.0"
+        "php": "^7.0|^8.0"
     },
     "require-dev": {
         "pestphp/pest": "^1.21"
